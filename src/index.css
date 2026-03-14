@@ -1,0 +1,56 @@
+@import "../styles/globals.css";
+
+@layer base {
+  :root {
+    @apply font-sans;
+  }
+
+  body {
+    @apply min-w-[320px] min-h-screen m-0 bg-background text-foreground;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at top left, oklch(0.97 0.04 335 / 0.95), transparent 24%),
+    radial-gradient(circle at top right, oklch(0.96 0.05 75 / 0.9), transparent 22%),
+    linear-gradient(180deg, oklch(0.985 0.012 330), oklch(0.978 0.01 25));
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, transparent, oklch(1 0 0 / 0.18) 65%, oklch(1 0 0 / 0.35));
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.dark body::before {
+  background:
+    radial-gradient(circle at top left, oklch(0.42 0.08 320 / 0.42), transparent 24%),
+    radial-gradient(circle at top right, oklch(0.4 0.07 40 / 0.32), transparent 24%),
+    radial-gradient(circle at bottom center, oklch(0.38 0.06 190 / 0.22), transparent 28%),
+    linear-gradient(180deg, oklch(0.23 0.03 302), oklch(0.18 0.025 285));
+}
+
+.dark body::after {
+  background:
+    linear-gradient(180deg, transparent, oklch(0.08 0.02 280 / 0.18) 65%, oklch(0.05 0.015 280 / 0.35));
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+  }
+}
