@@ -7,7 +7,7 @@ import { collectDue, collectScheduledEntries, type ScheduledEntry } from "./inte
 import { localDateString, toggleCompletion } from "./interview-prep/srs";
 import { loadState, saveStateDebounced } from "./interview-prep/storage";
 import type { AppState, StaticTopicGroupDefinition, TrackId } from "./interview-prep/types";
-import { TRACK_IDS } from "./interview-prep/types";
+import { createEmptyState, TRACK_IDS } from "./interview-prep/types";
 import "./index.css";
 
 type NavView = "home" | "schedule";
@@ -26,6 +26,12 @@ const accentDotClasses: Record<TrackId, string> = {
   leetcode: "bg-[oklch(0.86_0.06_55)]",
   hld: "bg-[oklch(0.84_0.04_300)]",
   lld: "bg-[oklch(0.84_0.04_170)]",
+};
+
+const accentBarClasses: Record<TrackId, string> = {
+  leetcode: "bg-[oklch(0.78_0.08_55)]",
+  hld: "bg-[oklch(0.74_0.07_300)]",
+  lld: "bg-[oklch(0.74_0.06_170)]",
 };
 
 const trackIcons: Record<TrackId, typeof Braces> = {
@@ -89,6 +95,15 @@ function completionLabel(entry: ScheduledEntry): string {
   return `Done · next ${entry.dueDate ?? "TBD"}`;
 }
 
+function getStartedCount(entries: ScheduledEntry[]): number {
+  return entries.filter((entry) => entry.progress.completionHistory.length > 0).length;
+}
+
+function getProgressPercent(startedCount: number, totalCount: number): number {
+  if (totalCount === 0) return 0;
+  return (startedCount / totalCount) * 100;
+}
+
 function getInitialTheme(): ThemeMode {
   if (typeof window === "undefined") return "light";
   const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
@@ -100,6 +115,7 @@ export function App() {
   const [state, setState] = useState<AppState>(() => loadState(TRACK_CONTENT));
   const [navView, setNavView] = useState<NavView>("home");
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [scheduleMode, setScheduleMode] = useState<ScheduleMode>("week");
   const [scheduleDate, setScheduleDate] = useState(localDateString(new Date()));
@@ -144,6 +160,11 @@ export function App() {
       next.progress[itemId] = toggleCompletion(itemId, currentProgress, new Date());
       return next;
     });
+  };
+
+  const resetAllProgress = () => {
+    setState(createEmptyState());
+    setIsResetDialogOpen(false);
   };
 
   return (
@@ -202,6 +223,9 @@ export function App() {
               const track = TRACK_CONTENT[trackId];
               const isOpen = openTracks[trackId];
               const TrackIcon = trackIcons[trackId];
+              const trackEntries = allEntries.filter((entry) => entry.trackId === trackId);
+              const startedCount = getStartedCount(trackEntries);
+              const progressPercent = getProgressPercent(startedCount, trackEntries.length);
 
               return (
                 <div key={trackId} className="space-y-2">
@@ -221,7 +245,15 @@ export function App() {
                       <>
                         <div className="min-w-0 flex-1">
                           <div className="truncate font-medium">{track.label}</div>
-                          <div className="truncate text-xs text-muted-foreground">{track.groups.length} topics</div>
+                          <div className="mt-1 truncate text-xs text-muted-foreground">
+                            {startedCount} / {trackEntries.length} in progress
+                          </div>
+                          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-background/80">
+                            <div
+                              className={`h-full rounded-full transition-all ${accentBarClasses[trackId]}`}
+                              style={{ width: `${progressPercent}%` }}
+                            />
+                          </div>
                         </div>
                         <span className="shrink-0 text-muted-foreground">
                         {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
@@ -253,7 +285,11 @@ export function App() {
 
         <main className="min-w-0 flex-1 space-y-6">
           {navView === "home" ? (
-            <HomeView dueEntries={dueEntries} onToggleItem={toggleItem} />
+            <HomeView
+              dueEntries={dueEntries}
+              onToggleItem={toggleItem}
+              onRequestResetAllProgress={() => setIsResetDialogOpen(true)}
+            />
           ) : (
             <ScheduleView
               entries={allEntries}
@@ -265,6 +301,27 @@ export function App() {
           )}
         </main>
       </div>
+
+      {isResetDialogOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 px-4 backdrop-blur-sm">
+          <Card className="w-full max-w-md border-destructive/30 bg-card shadow-2xl shadow-primary/10">
+            <CardHeader>
+              <CardTitle>Reset all progress?</CardTitle>
+              <CardDescription>
+                This will clear every completion history and return all study items to a clean not-started state.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setIsResetDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button variant="destructive" onClick={resetAllProgress}>
+                Confirm reset
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
@@ -284,14 +341,28 @@ function SidebarGroup({
   onToggleGroup: () => void;
   onToggleItem: (itemId: string) => void;
 }) {
+  const startedCount = getStartedCount(entries);
+  const progressPercent = getProgressPercent(startedCount, group.items.length);
+
   return (
     <div className="rounded-2xl bg-background/55">
       <button
         type="button"
         onClick={onToggleGroup}
-        className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-sm font-medium text-foreground"
+        className="flex w-full items-start justify-between gap-2 px-3 py-2.5 text-left text-sm font-medium text-foreground"
       >
-        <span className="truncate">{group.title}</span>
+        <div className="min-w-0 flex-1">
+          <div className="truncate">{group.title}</div>
+          <div className="mt-1 truncate text-[11px] font-normal text-muted-foreground">
+            {startedCount} / {group.items.length} in progress
+          </div>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-background/80">
+            <div
+              className={`h-full rounded-full transition-all ${accentBarClasses[trackId]}`}
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
         {isOpen ? <ChevronUp className="size-4 text-muted-foreground" /> : <ChevronDown className="size-4 text-muted-foreground" />}
       </button>
       {isOpen && (
@@ -330,9 +401,11 @@ function SidebarGroup({
 function HomeView({
   dueEntries,
   onToggleItem,
+  onRequestResetAllProgress,
 }: {
   dueEntries: ScheduledEntry[];
   onToggleItem: (itemId: string) => void;
+  onRequestResetAllProgress: () => void;
 }) {
   return (
     <div className="space-y-6">
@@ -393,6 +466,23 @@ function HomeView({
               </div>
             );
           })}
+        </CardContent>
+      </Card>
+
+      <Card className="border-destructive/30 bg-card/88 shadow-lg shadow-primary/5">
+        <CardHeader>
+          <CardTitle>Reset progress</CardTitle>
+          <CardDescription>
+            Clear all completion history and return every study item to a clean not-started state.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted-foreground">
+            Use this if you want to restart your schedule from scratch.
+          </p>
+          <Button variant="destructive" onClick={onRequestResetAllProgress}>
+            Reset all progress
+          </Button>
         </CardContent>
       </Card>
     </div>
