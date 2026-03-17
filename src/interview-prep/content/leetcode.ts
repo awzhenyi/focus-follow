@@ -8,7 +8,7 @@ export const leetcodeContent: StaticTrackDefinition = {
   groups: [
     {
       id: "arrays-hashing",
-      title: "Arrays & Hashing",
+      title: "Array",
       items: [
         { id: "contains-duplicate", title: "Contains Duplicate" },
         { id: "valid-anagram", title: "Valid Anagram" },
@@ -26,8 +26,8 @@ export const leetcodeContent: StaticTrackDefinition = {
       title: "Two Pointers",
       items: [
         { id: "valid-palindrome", title: "Valid Palindrome" },
-        { id: "two-sum-ii-input-array-is-sorted", title: "Two Sum II - Input Array Is Sorted" },
-        { id: "three-sum", title: "3Sum" },
+        { id: "two-sum-ii-input-array-is-sorted", title: "Sorted Input 2Sum" },
+        { id: "three-sum", title: "3 Sum" },
         { id: "container-with-most-water", title: "Container With Most Water" },
         { id: "trapping-rain-water", title: "Trapping Rain Water" },
       ],
@@ -109,7 +109,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "heap-priority-queue",
-      title: "Heap / Priority Queue",
+      title: "Heap",
       items: [
         { id: "kth-largest-element-in-a-stream", title: "Kth Largest Element in a Stream" },
         { id: "last-stone-weight", title: "Last Stone Weight" },
@@ -122,7 +122,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "backtracking",
-      title: "Backtracking",
+      title: "Backtrack",
       items: [
         { id: "subsets", title: "Subsets" },
         { id: "combination-sum", title: "Combination Sum" },
@@ -138,7 +138,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "tries",
-      title: "Tries",
+      title: "Trie",
       items: [
         { id: "implement-trie-prefix-tree", title: "Implement Trie (Prefix Tree)" },
         { id: "design-add-and-search-words-data-structure", title: "Design Add and Search Words Data Structure" },
@@ -166,7 +166,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "advanced-graphs",
-      title: "Advanced Graphs",
+      title: "Graphs",
       items: [
         { id: "reconstruct-itinerary", title: "Reconstruct Itinerary" },
         { id: "min-cost-to-connect-all-points", title: "Min Cost to Connect All Points" },
@@ -178,7 +178,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "1d-dynamic-programming",
-      title: "1-D Dynamic Programming",
+      title: "Dynamic Programming",
       items: [
         { id: "climbing-stairs", title: "Climbing Stairs" },
         { id: "min-cost-climbing-stairs", title: "Min Cost Climbing Stairs" },
@@ -196,7 +196,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "2d-dynamic-programming",
-      title: "2-D Dynamic Programming",
+      title: "Dynamic Programming",
       items: [
         { id: "unique-paths", title: "Unique Paths" },
         { id: "longest-common-subsequence", title: "Longest Common Subsequence" },
@@ -239,7 +239,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "math-and-geometry",
-      title: "Math & Geometry",
+      title: "Array",
       items: [
         { id: "rotate-image", title: "Rotate Image" },
         { id: "spiral-matrix", title: "Spiral Matrix" },
@@ -253,7 +253,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "bit-manipulation",
-      title: "Bit Manipulation",
+      title: "Bits",
       items: [
         { id: "single-number", title: "Single Number" },
         { id: "number-of-1-bits", title: "Number of 1 Bits" },

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Braces, Boxes, CalendarDays, ChevronDown, ChevronUp, CircuitBoard, Moon, PanelLeftClose, PanelLeftOpen, Sparkles, Sun } from "lucide-react";
+import { Braces, Boxes, CalendarDays, ChevronDown, ChevronUp, CircuitBoard, Handshake, Moon, PanelLeftClose, PanelLeftOpen, Sparkles, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TRACK_CONTENT } from "./interview-prep/content";
@@ -102,6 +102,11 @@ function getStartedCount(entries: ScheduledEntry[]): number {
 function getProgressPercent(startedCount: number, totalCount: number): number {
   if (totalCount === 0) return 0;
   return (startedCount / totalCount) * 100;
+}
+
+function getStudyItemHref(trackId: TrackId, groupTitle: string, itemTitle: string): string | null {
+  if (trackId !== "leetcode") return null;
+  return `https://awzhenyi.github.io/leetcode/neetcode150/${encodeURIComponent(groupTitle)}/${encodeURIComponent(itemTitle)}/`;
 }
 
 function getInitialTheme(): ThemeMode {
@@ -373,10 +378,11 @@ function SidebarGroup({
               entry !== undefined
                 ? entry.progress.completionHistory.length > 0 && !entry.isDueToday && !entry.isOverdue
                 : false;
+            const href = getStudyItemHref(trackId, group.title, item.title);
             return (
-              <label
+              <div
                 key={item.id}
-                className="flex cursor-pointer items-start gap-3 rounded-xl px-2 py-2 text-sm text-muted-foreground transition hover:bg-background/75 hover:text-foreground"
+                className="flex items-start gap-3 rounded-xl px-2 py-2 text-sm text-muted-foreground transition hover:bg-background/75 hover:text-foreground"
               >
                 <input
                   type="checkbox"
@@ -385,11 +391,24 @@ function SidebarGroup({
                   className="mt-0.5 size-3.5 rounded-sm border border-border bg-background accent-primary"
                 />
                 <div className="min-w-0 flex-1">
-                  <div className={`truncate ${checked ? "text-muted-foreground line-through" : "text-foreground"}`}>{item.title}</div>
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`block truncate underline-offset-4 hover:underline ${
+                        checked ? "text-muted-foreground line-through" : "text-foreground"
+                      }`}
+                    >
+                      {item.title}
+                    </a>
+                  ) : (
+                    <div className={`truncate ${checked ? "text-muted-foreground line-through" : "text-foreground"}`}>{item.title}</div>
+                  )}
                   {entry && <div className="mt-0.5 truncate text-[11px] text-muted-foreground">{completionLabel(entry)}</div>}
                 </div>
                 <span className={`mt-0.5 size-2 rounded-full ${accentDotClasses[trackId]}`} />
-              </label>
+              </div>
             );
           })}
         </div>
@@ -412,13 +431,13 @@ function HomeView({
       <Card className="overflow-hidden border-border/70 bg-card/92 shadow-xl shadow-primary/5">
         <CardHeader className="gap-4">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border/70 bg-background/75 px-3 py-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            <Sparkles className="size-3.5" />
+            <Handshake className="size-3.5" />
             Welcome back
           </div>
           <div>
-            <CardTitle className="text-3xl leading-tight">A calmer, cleaner place to revisit what matters.</CardTitle>
+            <CardTitle className="text-3xl leading-tight">A focused place to revisit what matters.</CardTitle>
             <CardDescription className="mt-2 max-w-2xl text-base">
-              Focus on one structured path at a time. When you check an item off, it gets scheduled for its next revisit automatically.
+              When you check an item off, it gets scheduled for its next revisit automatically.
             </CardDescription>
           </div>
         </CardHeader>

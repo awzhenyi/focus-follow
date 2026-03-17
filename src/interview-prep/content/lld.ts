@@ -2,35 +2,40 @@ import type { StaticTrackDefinition } from "../types";
 
 export const lldContent: StaticTrackDefinition = {
   id: "lld",
-  label: "Low-level system design",
+  label: "Low-level System Design",
   summary: "Practice object modeling, clean interfaces, and implementation-level design fluency.",
   accent: "mint",
   groups: [
     {
-      id: "modeling",
-      title: "Modeling",
+      id: "core-concepts",
+      title: "Core Concepts",
       items: [
-        { id: "identify-entities", title: "Identify Entities and Relationships" },
-        { id: "state-transitions", title: "State Transitions" },
-        { id: "responsibility-splitting", title: "Responsibility Splitting" },
-      ],
-    },
-    {
-      id: "patterns",
-      title: "Design Patterns",
-      items: [
-        { id: "factory-pattern", title: "Factory Pattern" },
-        { id: "strategy-pattern", title: "Strategy Pattern" },
-        { id: "observer-pattern", title: "Observer Pattern" },
+        { id: "design-principles", title: "Design Principles" },
+        { id: "oop-concepts", title: "OOP Concepts" },
+        { id: "design-patterns", title: "Design Patterns" },
       ],
     },
     {
       id: "concurrency",
       title: "Concurrency",
       items: [
-        { id: "thread-safety", title: "Thread Safety" },
-        { id: "locking-tradeoffs", title: "Locking Trade-offs" },
-        { id: "producer-consumer", title: "Producer Consumer" },
+        { id: "correctness", title: "Correctness" },
+        { id: "coordination", title: "Coordination" },
+        { id: "scarcity", title: "Scarcity" },
+      ],
+    },
+    {
+      id: "examples",
+      title: "Examples",
+      items: [
+        { id: "connect-four", title: "Connect Four" },
+        { id: "amazon-locker", title: "Amazon Locker" },
+        { id: "elevator", title: "Elevator" },
+        { id: "parking-lot", title: "Parking Lot" },
+        { id: "file-system", title: "File System" },
+        { id: "movie-ticket-booking", title: "Movie Ticket Booking" },
+        { id: "rate-limiter", title: "Rate Limiter" },
+        { id: "inventory-management", title: "Inventory Management" },
       ],
     },
   ],

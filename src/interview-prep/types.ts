@@ -3,8 +3,8 @@ export type TrackId = (typeof TRACK_IDS)[number];
 
 export const TRACK_LABELS: Record<TrackId, string> = {
   leetcode: "LeetCode",
-  hld: "High-level system design",
-  lld: "Low-level system design",
+  hld: "High-level System Design",
+  lld: "Low-level System Design",
 };
 
 export interface StaticStudyItemDefinition {
