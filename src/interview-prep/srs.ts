@@ -1,6 +1,6 @@
 import type { ItemProgress } from "./types";
 
-export const REVISIT_LADDER_DAYS = [1, 3, 7, 14, 30] as const;
+export const REVISIT_LADDER_DAYS = [3, 7, 14, 30] as const;
 
 export function localDateString(d: Date): string {
   const y = d.getFullYear();
