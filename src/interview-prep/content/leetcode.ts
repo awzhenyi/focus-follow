@@ -147,7 +147,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "graphs",
-      title: "Graphs",
+      title: "Graphs I",
       items: [
         { id: "number-of-islands", title: "Number of Islands" },
         { id: "clone-graph", title: "Clone Graph" },
@@ -166,7 +166,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "advanced-graphs",
-      title: "Graphs",
+      title: "Graphs II",
       items: [
         { id: "reconstruct-itinerary", title: "Reconstruct Itinerary" },
         { id: "min-cost-to-connect-all-points", title: "Min Cost to Connect All Points" },
@@ -178,7 +178,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "1d-dynamic-programming",
-      title: "Dynamic Programming",
+      title: "1D Dynamic Programming",
       items: [
         { id: "climbing-stairs", title: "Climbing Stairs" },
         { id: "min-cost-climbing-stairs", title: "Min Cost Climbing Stairs" },
@@ -196,7 +196,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "2d-dynamic-programming",
-      title: "Dynamic Programming",
+      title: "2D Dynamic Programming",
       items: [
         { id: "unique-paths", title: "Unique Paths" },
         { id: "longest-common-subsequence", title: "Longest Common Subsequence" },
@@ -239,7 +239,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     },
     {
       id: "math-and-geometry",
-      title: "Array",
+      title: "Math and Geometry",
       items: [
         { id: "rotate-image", title: "Rotate Image" },
         { id: "spiral-matrix", title: "Spiral Matrix" },
