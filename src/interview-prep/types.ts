@@ -15,6 +15,7 @@ export interface StaticStudyItemDefinition {
 export interface StaticTopicGroupDefinition {
   id: string;
   title: string;
+  linkTitle?: string;
   items: StaticStudyItemDefinition[];
 }
 

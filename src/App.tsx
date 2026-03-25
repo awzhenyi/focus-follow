@@ -105,9 +105,9 @@ function getProgressPercent(startedCount: number, totalCount: number): number {
   return (startedCount / totalCount) * 100;
 }
 
-function getStudyItemHref(trackId: TrackId, groupTitle: string, itemTitle: string): string | null {
+function getStudyItemHref(trackId: TrackId, groupLinkTitle: string, itemTitle: string): string | null {
   if (trackId !== "leetcode") return null;
-  return `https://awzhenyi.github.io/leetcode/neetcode150/${encodeURIComponent(groupTitle)}/${encodeURIComponent(itemTitle)}/`;
+  return `https://awzhenyi.github.io/leetcode/neetcode150/${encodeURIComponent(groupLinkTitle)}/${encodeURIComponent(itemTitle)}/`;
 }
 
 function getInitialTheme(): ThemeMode {
@@ -391,7 +391,7 @@ function SidebarGroup({
               entry !== undefined
                 ? entry.progress.completionHistory.length > 0 && !entry.isDueToday && !entry.isOverdue
                 : false;
-            const href = getStudyItemHref(trackId, group.title, item.title);
+            const href = getStudyItemHref(trackId, group.linkTitle ?? group.title, item.title);
             return (
               <div
                 key={item.id}
