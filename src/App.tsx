@@ -391,7 +391,7 @@ function SidebarGroup({
               entry !== undefined
                 ? entry.progress.completionHistory.length > 0 && !entry.isDueToday && !entry.isOverdue
                 : false;
-            const href = getStudyItemHref(trackId, group.linkTitle ?? group.title, item.title);
+            const href = getStudyItemHref(trackId, group.linkTitle ?? group.title, item.linkTitle ?? item.title);
             return (
               <div
                 key={item.id}

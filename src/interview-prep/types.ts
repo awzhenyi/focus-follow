@@ -10,6 +10,7 @@ export const TRACK_LABELS: Record<TrackId, string> = {
 export interface StaticStudyItemDefinition {
   id: string;
   title: string;
+  linkTitle?: string;
 }
 
 export interface StaticTopicGroupDefinition {
