@@ -7,9 +7,12 @@ export const TRACK_LABELS: Record<TrackId, string> = {
   lld: "Low-level System Design",
 };
 
+export type StudyDifficulty = "easy" | "medium" | "hard";
+
 export interface StaticStudyItemDefinition {
   id: string;
   title: string;
+  difficulty?: StudyDifficulty;
   linkTitle?: string;
 }
 

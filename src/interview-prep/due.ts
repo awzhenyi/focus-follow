@@ -1,5 +1,5 @@
 import { getAllBundledItems } from "./content";
-import type { AppContent, AppState, ItemProgress, TrackId } from "./types";
+import type { AppContent, AppState, ItemProgress, StudyDifficulty, TrackId } from "./types";
 import { localDateString } from "./srs";
 
 export interface ScheduledEntry {
@@ -14,6 +14,7 @@ export interface ScheduledEntry {
   progress: ItemProgress;
   itemId: string;
   itemTitle: string;
+  itemDifficulty?: StudyDifficulty;
 }
 
 export function collectScheduledEntries(state: AppState, content: AppContent, now: Date = new Date()): ScheduledEntry[] {
@@ -39,6 +40,7 @@ export function collectScheduledEntries(state: AppState, content: AppContent, no
       progress,
       itemId: item.id,
       itemTitle: item.title,
+      itemDifficulty: item.difficulty,
     };
   });
 

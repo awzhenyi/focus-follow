@@ -6,7 +6,7 @@ import { TRACK_CONTENT } from "./interview-prep/content";
 import { collectDue, collectScheduledEntries, type ScheduledEntry } from "./interview-prep/due";
 import { localDateString, toggleCompletion } from "./interview-prep/srs";
 import { loadState, saveStateDebounced } from "./interview-prep/storage";
-import type { AppState, StaticTopicGroupDefinition, TrackId } from "./interview-prep/types";
+import type { AppState, StaticTopicGroupDefinition, StudyDifficulty, TrackId } from "./interview-prep/types";
 import { createEmptyState, TRACK_IDS } from "./interview-prep/types";
 import appIcon from "./focus-follow-icon.png";
 import "./index.css";
@@ -23,16 +23,16 @@ const accentClasses: Record<TrackId, string> = {
   lld: "bg-[oklch(0.95_0.04_170)] text-[oklch(0.36_0.05_170)] border-[oklch(0.88_0.03_170)]",
 };
 
-const accentDotClasses: Record<TrackId, string> = {
-  leetcode: "bg-[oklch(0.86_0.06_55)]",
-  hld: "bg-[oklch(0.84_0.04_300)]",
-  lld: "bg-[oklch(0.84_0.04_170)]",
-};
-
 const accentBarClasses: Record<TrackId, string> = {
   leetcode: "bg-[oklch(0.78_0.08_55)]",
   hld: "bg-[oklch(0.74_0.07_300)]",
   lld: "bg-[oklch(0.74_0.06_170)]",
+};
+
+const difficultyBadgeClasses: Record<StudyDifficulty, string> = {
+  easy: "border-emerald-500/20 bg-emerald-500/12 text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/12 dark:text-emerald-200",
+  medium: "border-amber-500/20 bg-amber-500/12 text-amber-700 dark:border-amber-400/20 dark:bg-amber-400/12 dark:text-amber-200",
+  hard: "border-rose-500/20 bg-rose-500/12 text-rose-700 dark:border-rose-400/20 dark:bg-rose-400/12 dark:text-rose-200",
 };
 
 const trackIcons: Record<TrackId, typeof Braces> = {
@@ -103,6 +103,25 @@ function getStartedCount(entries: ScheduledEntry[]): number {
 function getProgressPercent(startedCount: number, totalCount: number): number {
   if (totalCount === 0) return 0;
   return (startedCount / totalCount) * 100;
+}
+
+function DifficultyBadge({
+  difficulty,
+  compact = false,
+}: {
+  difficulty?: StudyDifficulty;
+  compact?: boolean;
+}) {
+  if (!difficulty) return null;
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center rounded-full border font-medium uppercase tracking-[0.14em] ${
+        compact ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-[11px]"
+      } ${difficultyBadgeClasses[difficulty]}`}
+    >
+      {difficulty}
+    </span>
+  );
 }
 
 function getStudyItemHref(trackId: TrackId, groupLinkTitle: string, itemTitle: string): string | null {
@@ -404,23 +423,27 @@ function SidebarGroup({
                   className="mt-0.5 size-3.5 rounded-sm border border-border bg-background accent-primary"
                 />
                 <div className="min-w-0 flex-1">
-                  {href ? (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`block truncate underline-offset-4 hover:underline ${
-                        checked ? "text-muted-foreground line-through" : "text-foreground"
-                      }`}
-                    >
-                      {item.title}
-                    </a>
-                  ) : (
-                    <div className={`truncate ${checked ? "text-muted-foreground line-through" : "text-foreground"}`}>{item.title}</div>
-                  )}
+                  <div className="flex min-w-0 items-start gap-2">
+                    <div className="min-w-0 flex-1">
+                      {href ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`block truncate underline-offset-4 hover:underline ${
+                            checked ? "text-muted-foreground line-through" : "text-foreground"
+                          }`}
+                        >
+                          {item.title}
+                        </a>
+                      ) : (
+                        <div className={`truncate ${checked ? "text-muted-foreground line-through" : "text-foreground"}`}>{item.title}</div>
+                      )}
+                    </div>
+                    <DifficultyBadge difficulty={item.difficulty} compact />
+                  </div>
                   {entry && <div className="mt-0.5 truncate text-[11px] text-muted-foreground">{completionLabel(entry)}</div>}
                 </div>
-                <span className={`mt-0.5 size-2 rounded-full ${accentDotClasses[trackId]}`} />
               </div>
             );
           })}
@@ -570,6 +593,7 @@ function DueItemCard({ entry, onToggleItem }: { entry: ScheduledEntry; onToggleI
         <div className="flex flex-wrap items-center gap-2">
           <span className={`rounded-full border px-2.5 py-1 text-xs font-medium ${accentClasses[entry.trackId]}`}>{entry.trackLabel}</span>
           <span className="text-xs text-muted-foreground">{entry.topicTitle}</span>
+          <DifficultyBadge difficulty={entry.itemDifficulty} />
           <span className="ml-auto text-xs text-muted-foreground">
             {entry.isOverdue ? `Overdue since ${entry.dueDate}` : `Due ${entry.dueDate}`}
           </span>
@@ -762,6 +786,7 @@ function ScheduledListCard({ entry }: { entry: ScheduledEntry }) {
       <div className="flex flex-wrap items-center gap-2">
         <span className={`rounded-full border px-2.5 py-1 text-xs font-medium ${accentClasses[entry.trackId]}`}>{entry.trackLabel}</span>
         <span className="text-xs text-muted-foreground">{entry.topicTitle}</span>
+        <DifficultyBadge difficulty={entry.itemDifficulty} />
         <span className="ml-auto text-xs text-muted-foreground">Due {entry.dueDate}</span>
       </div>
       <div className="mt-3 font-medium">{entry.itemTitle}</div>
@@ -772,7 +797,10 @@ function ScheduledListCard({ entry }: { entry: ScheduledEntry }) {
 function MiniScheduleEntry({ entry }: { entry: ScheduledEntry }) {
   return (
     <div className="rounded-2xl border border-border/55 bg-card/72 px-2 py-1.5 text-xs shadow-sm">
-      <div className="truncate font-medium">{entry.itemTitle}</div>
+      <div className="flex items-start gap-1.5">
+        <div className="min-w-0 flex-1 truncate font-medium">{entry.itemTitle}</div>
+        <DifficultyBadge difficulty={entry.itemDifficulty} compact />
+      </div>
       <div className="truncate text-muted-foreground">{entry.topicTitle}</div>
     </div>
   );
