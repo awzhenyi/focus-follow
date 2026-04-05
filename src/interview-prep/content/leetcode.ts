@@ -153,7 +153,7 @@ export const leetcodeContent: StaticTrackDefinition = {
     {
       id: "graphs",
       title: "Graphs I",
-      linkTitle: "Graph",
+      linkTitle: "Graphs",
       items: [
         { id: "number-of-islands", title: "Number of Islands", difficulty: "medium" },
         { id: "clone-graph", title: "Clone Graph", difficulty: "medium" },
