@@ -1,4 +1,4 @@
-import type { AppContent, StaticStudyItemDefinition, TrackId } from "../types";
+import type { AppContent, StaticStudyItemDefinition, StaticTopicGroupDefinition, TrackId } from "../types";
 import { hldContent } from "./hld";
 import { leetcodeContent } from "./leetcode";
 import { lldContent } from "./lld";
@@ -14,7 +14,30 @@ export interface BundledItemRef {
   trackLabel: string;
   groupId: string;
   groupTitle: string;
+  itemHref: string | null;
   item: StaticStudyItemDefinition;
+}
+
+export function getStudyItemHref(trackId: TrackId, group: StaticTopicGroupDefinition, item: StaticStudyItemDefinition): string | null {
+  if (trackId === "leetcode") {
+    return `https://awzhenyi.github.io/leetcode/neetcode150/${encodeURIComponent(group.linkTitle ?? group.title)}/${encodeURIComponent(
+      item.linkTitle ?? item.title,
+    )}/`;
+  }
+
+  if (trackId === "hld") {
+    const section = item.linkSection ?? group.linkSection;
+    if (!section) return null;
+    return `https://www.hellointerview.com/learn/system-design/${section}/${item.linkId ?? item.id}`;
+  }
+
+  if (trackId === "lld") {
+    const section = item.linkSection ?? group.linkSection;
+    if (!section) return null;
+    return `https://www.hellointerview.com/learn/low-level-design/${section}/${item.linkId ?? item.id}`;
+  }
+
+  return null;
 }
 
 export function getAllBundledItems(content: AppContent = TRACK_CONTENT): BundledItemRef[] {
@@ -25,6 +48,7 @@ export function getAllBundledItems(content: AppContent = TRACK_CONTENT): Bundled
         trackLabel: content[trackId].label,
         groupId: group.id,
         groupTitle: group.title,
+        itemHref: getStudyItemHref(trackId, group, item),
         item,
       })),
     ),

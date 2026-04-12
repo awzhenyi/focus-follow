@@ -15,11 +15,12 @@ export interface ScheduledEntry {
   itemId: string;
   itemTitle: string;
   itemDifficulty?: StudyDifficulty;
+  itemHref: string | null;
 }
 
 export function collectScheduledEntries(state: AppState, content: AppContent, now: Date = new Date()): ScheduledEntry[] {
   const today = localDateString(now);
-  const out: ScheduledEntry[] = getAllBundledItems(content).map(({ trackId, trackLabel, groupId, groupTitle, item }) => {
+  const out: ScheduledEntry[] = getAllBundledItems(content).map(({ trackId, trackLabel, groupId, groupTitle, itemHref, item }) => {
     const progress = state.progress[item.id] ?? {
       itemId: item.id,
       completionCount: 0,
@@ -41,6 +42,7 @@ export function collectScheduledEntries(state: AppState, content: AppContent, no
       itemId: item.id,
       itemTitle: item.title,
       itemDifficulty: item.difficulty,
+      itemHref,
     };
   });
 

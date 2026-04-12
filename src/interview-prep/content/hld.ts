@@ -9,6 +9,7 @@ export const hldContent: StaticTrackDefinition = {
     {
       id: "core-concepts",
       title: "Core Concepts",
+      linkSection: "core-concepts",
       items: [
         { id: "networking-essentials", title: "Networking Essentials" },
         { id: "api-design", title: "API Design" },
@@ -19,25 +20,27 @@ export const hldContent: StaticTrackDefinition = {
         { id: "consistent-hashing", title: "Consistent Hashing" },
         { id: "cap-theorem", title: "CAP Theorem" },
         { id: "numbers-to-know", title: "Numbers to Know" },
-        { id: "question-breakdowns", title: "Question Breakdowns" },
+        { id: "question-breakdowns", title: "Question Breakdowns", linkSection: "problem-breakdowns", linkId: "overview" },
       ],
     },
     {
       id: "patterns",
       title: "Patterns",
+      linkSection: "patterns",
       items: [
-        { id: "real-time-updates", title: "Real-time Updates" },
+        { id: "real-time-updates", title: "Real-time Updates", linkId: "realtime-updates" },
         { id: "dealing-with-contention", title: "Dealing with Contention" },
         { id: "multi-step-processes", title: "Multi-step Processes" },
         { id: "scaling-reads", title: "Scaling Reads" },
         { id: "scaling-writes", title: "Scaling Writes" },
-        { id: "handling-large-blobs", title: "Handling Large Blobs" },
-        { id: "managing-long-running-tasks", title: "Managing Long Running Tasks" },
+        { id: "handling-large-blobs", title: "Handling Large Blobs", linkId: "large-blobs" },
+        { id: "managing-long-running-tasks", title: "Managing Long Running Tasks", linkId: "long-running-tasks" },
       ],
     },
     {
       id: "key-technologies",
       title: "Key Technologies",
+      linkSection: "deep-dives",
       items: [
         { id: "redis", title: "Redis" },
         { id: "elasticsearch", title: "Elasticsearch" },

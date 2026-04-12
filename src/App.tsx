@@ -2,13 +2,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Braces, Boxes, CalendarDays, ChevronDown, ChevronUp, CircuitBoard, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TRACK_CONTENT } from "./interview-prep/content";
+import { getStudyItemHref, TRACK_CONTENT } from "./interview-prep/content";
 import { collectDue, collectScheduledEntries, type ScheduledEntry } from "./interview-prep/due";
 import { localDateString, toggleCompletion } from "./interview-prep/srs";
 import { loadState, saveStateDebounced } from "./interview-prep/storage";
 import type { AppState, StaticTopicGroupDefinition, StudyDifficulty, TrackId } from "./interview-prep/types";
 import { createEmptyState, TRACK_IDS } from "./interview-prep/types";
-import appIcon from "./focus-follow-icon.png";
+import appIcon from "./assets/icons/book-icon.svg";
 import "./index.css";
 
 type NavView = "home" | "schedule";
@@ -122,11 +122,6 @@ function DifficultyBadge({
       {difficulty}
     </span>
   );
-}
-
-function getStudyItemHref(trackId: TrackId, groupLinkTitle: string, itemTitle: string): string | null {
-  if (trackId !== "leetcode") return null;
-  return `https://awzhenyi.github.io/leetcode/neetcode150/${encodeURIComponent(groupLinkTitle)}/${encodeURIComponent(itemTitle)}/`;
 }
 
 function getInitialTheme(): ThemeMode {
@@ -410,7 +405,7 @@ function SidebarGroup({
               entry !== undefined
                 ? entry.progress.completionHistory.length > 0 && !entry.isDueToday && !entry.isOverdue
                 : false;
-            const href = getStudyItemHref(trackId, group.linkTitle ?? group.title, item.linkTitle ?? item.title);
+            const href = getStudyItemHref(trackId, group, item);
             return (
               <div
                 key={item.id}
@@ -598,7 +593,15 @@ function DueItemCard({ entry, onToggleItem }: { entry: ScheduledEntry; onToggleI
             {entry.isOverdue ? `Overdue since ${entry.dueDate}` : `Due ${entry.dueDate}`}
           </span>
         </div>
-        <div className="mt-3 font-medium">{entry.itemTitle}</div>
+        <div className="mt-3 min-w-0 font-medium">
+          {entry.itemHref ? (
+            <a href={entry.itemHref} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+              {entry.itemTitle}
+            </a>
+          ) : (
+            entry.itemTitle
+          )}
+        </div>
       </div>
     </div>
   );
@@ -789,7 +792,15 @@ function ScheduledListCard({ entry }: { entry: ScheduledEntry }) {
         <DifficultyBadge difficulty={entry.itemDifficulty} />
         <span className="ml-auto text-xs text-muted-foreground">Due {entry.dueDate}</span>
       </div>
-      <div className="mt-3 font-medium">{entry.itemTitle}</div>
+      <div className="mt-3 min-w-0 font-medium">
+        {entry.itemHref ? (
+          <a href={entry.itemHref} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+            {entry.itemTitle}
+          </a>
+        ) : (
+          entry.itemTitle
+        )}
+      </div>
     </div>
   );
 }
@@ -798,7 +809,15 @@ function MiniScheduleEntry({ entry }: { entry: ScheduledEntry }) {
   return (
     <div className="rounded-2xl border border-border/55 bg-card/72 px-2 py-1.5 text-xs shadow-sm">
       <div className="flex items-start gap-1.5">
-        <div className="min-w-0 flex-1 truncate font-medium">{entry.itemTitle}</div>
+        <div className="min-w-0 flex-1 truncate font-medium">
+          {entry.itemHref ? (
+            <a href={entry.itemHref} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+              {entry.itemTitle}
+            </a>
+          ) : (
+            entry.itemTitle
+          )}
+        </div>
         <DifficultyBadge difficulty={entry.itemDifficulty} compact />
       </div>
       <div className="truncate text-muted-foreground">{entry.topicTitle}</div>

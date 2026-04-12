@@ -9,6 +9,7 @@ export const lldContent: StaticTrackDefinition = {
     {
       id: "core-concepts",
       title: "Core Concepts",
+      linkSection: "in-a-hurry",
       items: [
         { id: "design-principles", title: "Design Principles" },
         { id: "oop-concepts", title: "OOP Concepts" },
@@ -18,6 +19,7 @@ export const lldContent: StaticTrackDefinition = {
     {
       id: "concurrency",
       title: "Concurrency",
+      linkSection: "concurrency",
       items: [
         { id: "correctness", title: "Correctness" },
         { id: "coordination", title: "Coordination" },
@@ -27,6 +29,7 @@ export const lldContent: StaticTrackDefinition = {
     {
       id: "examples",
       title: "Examples",
+      linkSection: "problem-breakdowns",
       items: [
         { id: "connect-four", title: "Connect Four" },
         { id: "amazon-locker", title: "Amazon Locker" },

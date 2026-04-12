@@ -14,12 +14,15 @@ export interface StaticStudyItemDefinition {
   title: string;
   difficulty?: StudyDifficulty;
   linkTitle?: string;
+  linkId?: string;
+  linkSection?: string;
 }
 
 export interface StaticTopicGroupDefinition {
   id: string;
   title: string;
   linkTitle?: string;
+  linkSection?: string;
   items: StaticStudyItemDefinition[];
 }
 
