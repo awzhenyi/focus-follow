@@ -9,6 +9,7 @@ import { loadState, saveStateDebounced } from "./interview-prep/storage";
 import type { AppState, StaticTopicGroupDefinition, StudyDifficulty, TrackId } from "./interview-prep/types";
 import { createEmptyState, TRACK_IDS } from "./interview-prep/types";
 import appIcon from "./assets/icons/book-icon.svg";
+import appIconMonochrome from "./assets/icons/book-icon-monochrome.svg";
 import "./index.css";
 
 type NavView = "home" | "schedule";
@@ -195,7 +196,7 @@ export function App() {
           <div className="flex flex-col gap-3 rounded-[24px] border border-border/60 bg-card/80 px-4 py-3 shadow-[0_18px_60px_oklch(0.2_0.04_300_/_0.12)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:border-white/8 dark:bg-[linear-gradient(180deg,oklch(0.26_0.026_302_/_0.92),oklch(0.22_0.022_290_/_0.88))]">
             <div className="flex items-center gap-3">
               <span className="inline-flex size-10 items-center justify-center overflow-hidden rounded-2xl shadow-[inset_0_1px_0_oklch(1_0_0_/_0.45),0_10px_30px_oklch(0.42_0.08_305_/_0.15)] ring-1 ring-white/10">
-                <img src={appIcon} alt="Focus Follow icon" className="size-full object-cover" />
+                <img src={theme === "dark" ? appIconMonochrome : appIcon} alt="Focus Follow icon" className="size-full object-cover" />
               </span>
               <div className="flex flex-col">
                 <span className="text-[11px] font-semibold tracking-[0.22em] text-muted-foreground">
